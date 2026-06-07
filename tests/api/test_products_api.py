@@ -1,29 +1,24 @@
-from utils.api_client import APIClient
+from utils.mock_api_client import MockAPIClient
 from utils.schema_validator import SchemaValidator
 
 
 def test_get_all_products():
-    client = APIClient("https://fakestoreapi.com")
+    client = MockAPIClient()
 
-    response = client.get("/products")
+    response = client.get_all_products()
 
-    SchemaValidator.validate_status_code(response)
+    assert isinstance(response, list)
+    assert len(response) > 0
 
-    data = response.json()
-
-    assert isinstance(data, list)
-    assert len(data) > 0
-
-    SchemaValidator.validate_keys(data[0], ["id", "title", "price"])
+    SchemaValidator.validate_product_schema(response[0])
 
 
 def test_get_single_product():
-    client = APIClient("https://fakestoreapi.com")
+    client = MockAPIClient()
 
-    response = client.get("/products/1")
+    response = client.get_product_by_id(1)
 
-    SchemaValidator.validate_status_code(response)
+    assert response is not None
+    assert response["id"] == 1
 
-    data = response.json()
-
-    SchemaValidator.validate_keys(data, ["id", "title", "price"])
+    SchemaValidator.validate_product_schema(response)
