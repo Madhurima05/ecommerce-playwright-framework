@@ -17,4 +17,4 @@
 
 ```bash
 pip install -r requirements.txt
-pytest -s -v --html=reports/report.html
+pytest -s -v --html=reports/report.html# ecommerce-playwright-framework
