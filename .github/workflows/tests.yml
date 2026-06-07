@@ -26,8 +26,10 @@ jobs:
 
       - name: Install Playwright browsers
         run: |
-          playwright install --with-deps
+          python -m playwright install --with-deps
 
       - name: Run tests
+        env:
+          CI: true
         run: |
           pytest -s -v
