@@ -1,22 +1,23 @@
 import pytest
-import os
 from playwright.sync_api import sync_playwright
+import os
 
 
 @pytest.fixture(scope="function")
-def browser():
+def browser_context():
     with sync_playwright() as p:
 
-        # Detect CI environment (GitHub Actions)
         is_ci = os.getenv("CI") == "true"
 
-        browser = p.chromium.launch(
-            headless=is_ci
-        )
-
+        browser = p.chromium.launch(headless=is_ci)
         context = browser.new_context()
-        page = context.new_page()
 
-        yield page
+        yield context
 
         browser.close()
+
+
+@pytest.fixture(scope="function")
+def page(browser_context):
+    page = browser_context.new_page()
+    yield page
