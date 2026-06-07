@@ -6,8 +6,4 @@ class APIClient:
         self.base_url = base_url
 
     def get(self, endpoint):
-        url = self.base_url + endpoint
-
-        response = requests.get(url, timeout=10)
-
-        return response
+        return requests.get(self.base_url + endpoint, timeout=10)
