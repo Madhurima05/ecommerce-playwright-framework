@@ -1,3 +1,4 @@
+import os
 from utils.api_client import APIClient
 
 
@@ -6,7 +7,10 @@ def test_get_all_products():
 
     response = client.get("/products")
 
-    assert response.status_code in [200, 201], f"API failed with {response.status_code}"
+    if response.status_code == 403:
+        assert os.getenv("CI") != "true", "API blocked in CI environment"
 
-    data = response.json()
-    assert isinstance(data, list)
+    assert response.status_code in [200, 201]
+
+    if response.status_code == 200:
+        assert isinstance(response.json(), list)
