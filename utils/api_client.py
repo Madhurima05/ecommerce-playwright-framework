@@ -5,29 +5,15 @@ class APIClient:
     def __init__(self, base_url):
         self.base_url = base_url
 
-        self.default_headers = {
+        self.headers = {
             "User-Agent": "Mozilla/5.0",
-            "Accept": "application/json"
+            "Accept": "application/json",
+            "Connection": "keep-alive"
         }
 
-    def get(self, endpoint, headers=None, params=None):
+    def get(self, endpoint):
         url = self.base_url + endpoint
 
-        merged_headers = self.default_headers.copy()
-        if headers:
-            merged_headers.update(headers)
-
-        response = requests.get(url, headers=merged_headers, params=params)
-
-        return response
-
-    def post(self, endpoint, data=None, headers=None):
-        url = self.base_url + endpoint
-
-        merged_headers = self.default_headers.copy()
-        if headers:
-            merged_headers.update(headers)
-
-        response = requests.post(url, json=data, headers=merged_headers)
+        response = requests.get(url, headers=self.headers, timeout=10)
 
         return response
